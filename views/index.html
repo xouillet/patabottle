@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>Pataxou</title>
+<script
+	  src="https://code.jquery.com/jquery-3.1.1.min.js"
+	  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+	  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/multi-select/0.9.12/js/jquery.multi-select.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/multi-select/0.9.12/css/multi-select.min.css" media="screen" rel="stylesheet" type="text/css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
+<style>
+.ms-container { width: 100% }
+.ms-container .ms-list { height: 100% }
+</style>
+</head>
+<body>
+
+<h1>Choix des chansons</h1>
+<form action="" method="post">
+<label>Sous-titre</label><input type="text" class="form-control" name="subtitle">
+<select id='optgroup' multiple='multiple' name='songs'>
+  % for artist, songs in sorted(artists.items(), key=lambda x:x[0]):
+  <optgroup label='{{ artist }}'>
+  	% for path,title in songs:
+       <option value='{{ path }}'>{{ title }}</option>
+	% end
+  % end
+</select>
+
+<div class="pull-right" style="margin-top: 15px">
+  <input type="submit" class="btn btn-success" value="Go !">
+</div>
+</form>
+<script>
+$('#optgroup').multiSelect({ selectableOptgroup: true });
+</script>
+
+</body>
+</html>
+

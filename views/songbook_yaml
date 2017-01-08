@@ -1,0 +1,24 @@
+book:
+  lang: fr
+  encoding: utf8
+  datadir: "{{ PATADATA }}"
+  pictures: yes
+  template: data.tex
+chords:
+  show: yes
+  diagramreminder: important
+  repeatchords: yes
+  lilypond: yes
+
+% if subtitle:
+template:
+  patacrep.tex:
+    subtitle: {{ subtitle }}
+% end
+
+content:
+    sort:
+      content:
+        % for song in songs:
+        - {{ song }}
+        % end
