@@ -8,7 +8,7 @@ import shutil
 import yaml
 from contextlib import contextmanager
 
-from bottle import route, run, template, request, response
+from bottle import route, run, template, request, response, default_app
 
 from patacrep.songbook import prepare_songbook
 from patacrep.build    import DEFAULT_STEPS, SongbookBuilder
@@ -20,13 +20,12 @@ logging.basicConfig(level=logging.DEBUG)
 # Path configuration
 
 HERE = os.path.dirname(os.path.realpath(__file__))
-PATADATA=os.path.join(HERE, '../patadata')
-PATADATA_SONGS=os.path.join(PATADATA, 'songs')
+PATADATA=os.path.join(HERE, './patadata')
 
 # First parse all songs
 logging.info("Discovering all songs...")
 songs = []
-for path,_,files in os.walk(PATADATA_SONGS):
+for path,_,files in os.walk(os.path.join(PATADATA, 'songs')):
     for filename in files:
         if re.match(".*\.sg$", filename):
             filepath = os.path.join(path, filename)
@@ -34,6 +33,7 @@ for path,_,files in os.walk(PATADATA_SONGS):
                 song = parse_song(f.read(), filepath)
                 song['path'] = filepath
                 songs.append(song)
+
 logging.info("%d songs discovered", len(songs))
 
 # Sort by artists
@@ -95,3 +95,5 @@ def generate():
 
 if __name__ == '__main__':
     run(host='0.0.0.0', port=7654)
+
+app = default_app()

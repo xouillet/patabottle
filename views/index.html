@@ -11,13 +11,91 @@
 <style>
 .ms-container { width: 100% }
 .ms-container .ms-list { height: 100% }
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+#overlay {
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+}
+
+#overlay-text{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 50px;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+
 </style>
 </head>
 <body>
 
-<h1>Choix des chansons</h1>
-<form action="" method="post">
-<label>Sous-titre</label><input type="text" class="form-control" name="subtitle">
+<div id="overlay"><div id="overlay-text">Génération en cours...<div class="lds-ring"><div></div><div></div><div></div><div></div></div></div></div>
+
+<div class="container">
+<form id="form" action="" method="post">
+<div class="row">
+  <div class="col-md-4">
+    <h1>Pataxou</h1>
+  </div>
+  <div class="col-md-1 col-md-offset-7" style="padding: 15px">
+    <input type="submit" class="btn btn-success" value="Générer !">
+  </div>
+</div>
+
+<div class="form-group">
+<label>Titre du recueil</label><input type="text" class="form-control" name="subtitle">
+</div>
+
+<div class="form-group">
+<label>Chansons</label>
 <select id='optgroup' multiple='multiple' name='songs'>
   % for artist, songs in sorted(artists.items(), key=lambda x:x[0]):
   <optgroup label='{{ artist }}'>
@@ -26,13 +104,12 @@
 	% end
   % end
 </select>
-
-<div class="pull-right" style="margin-top: 15px">
-  <input type="submit" class="btn btn-success" value="Go !">
 </div>
 </form>
+</div>
 <script>
 $('#optgroup').multiSelect({ selectableOptgroup: true });
+$("#form").submit(function() { $("#overlay").show() })
 </script>
 
 </body>
