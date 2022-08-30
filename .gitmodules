@@ -1,0 +1,3 @@
+[submodule "patadata"]
+	path = patadata
+	url = https://github.com/patacrep/patadata.git
